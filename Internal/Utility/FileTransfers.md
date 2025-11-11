@@ -150,24 +150,23 @@ echo -n '<encoded data>' | base64 -d > <filename>
 ```
 # SSH
 ## Downloads
-Enable the ssh server
-```bash
+```
+# Enable the ssh server
 sudo systemctl enable ssh
-```
-Start the ssh server
-```bash
+
+# Start the ssh server
 sudo systemctl start ssh
-```
-Check for SSH Listener
-```bash
+
+#Check for SSH Listener
 netstat -lnpt
 ```
-Download via SCP
+Download via SCP (Works for both Linux & Windows)
 ```bash
 scp plaintext@<IP>:/<path>/<filename> .
 ```
 ## Uploads
-```bash
+Upload via SCP (Works for both Linux & Windows)
+```
 scp <local_file> <user>@<IP>:<Desination_path_to_save_the_file>
 ```
 # SMB
