@@ -21,8 +21,12 @@ python3 -m pyftpdlib -p 21 --write
 
 # Windows CMD
 ftp [hostname/IP]
+get [file]
 ```
 ### Upload
+```
+put [file]
+```
 ## HTTP
 ### Simple Python HTTP Server
 ```
