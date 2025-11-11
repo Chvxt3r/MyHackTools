@@ -2,21 +2,32 @@
 [Harmj0y Powershell download cradles](https://gist.github.com/HarmJ0y/bb48307ffa663256e239)
 
 # Linux File Transfers
-## Simple Python FTP Server
+## FTP
+### Simple Python FTP Server
 - Installation
-```bash
+```
 sudo apt install python3-pyftpdlib
 ```
-- Usage
-```bash
+- Start the Server
+```
 python3 -m pyftpdlib -p 21 --write
 ```
 ## Simple Python HTTP Server
-```bash
+```
 python3 -m http.server [port]
 ```
+- Download
+```
+# Linux
+
+# Windows PowerShell
+(New-Object Net.WebClient).DownloadFile('ftp://10.10.10.10/file.txt', '<Output_File_Name>')
+
+# Windows CMD
+ftp [hostname/IP]
+```
 ## Base64 Encode/Decode
-```bash
+```
 #Base64 Encode
 cat <file> |base64 -w 0;echo
 #Base64 Decode
