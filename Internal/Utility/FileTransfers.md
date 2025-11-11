@@ -12,19 +12,19 @@ sudo apt install python3-pyftpdlib
 ```
 python3 -m pyftpdlib -p 21 --write
 ```
-## Simple Python HTTP Server
-```
-python3 -m http.server [port]
-```
 - Download
 ```
 # Linux
 
 # Windows PowerShell
-(New-Object Net.WebClient).DownloadFile('ftp://10.10.10.10/file.txt', '<Output_File_Name>')
+(New-Object Net.WebClient).DownloadFile('ftp://[IP/Hostname]/[file]', '[Output File]')
 
 # Windows CMD
 ftp [hostname/IP]
+```
+## Simple Python HTTP Server
+```
+python3 -m http.server [port]
 ```
 ## Base64 Encode/Decode
 ```
