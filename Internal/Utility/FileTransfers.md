@@ -1,5 +1,3 @@
-# References and Links
-[Harmj0y Powershell download cradles](https://gist.github.com/HarmJ0y/bb48307ffa663256e239)
 
 # FTP
 ## Simple Python FTP Server
@@ -342,3 +340,8 @@ To Access on the windows machine, connect to ```\\tsclient\```
 
 
 # Catching files over HTTP/S
+
+# Todo
+
+# References and Links
+[Harmj0y Powershell download cradles](https://gist.github.com/HarmJ0y/bb48307ffa663256e239)
