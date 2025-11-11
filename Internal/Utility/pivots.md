@@ -114,4 +114,5 @@ sudo ip link set ligolo up
 # Verify iface added
 ip addr show ligolo
 ```
-# Test this out for verification before proceeding
+# Todo
+- [ ] Test Ligolo
