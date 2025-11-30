@@ -1,8 +1,83 @@
-# Searching Files
+# Clear Text Passwords
+## Searching File Contents
+### findstr
+```
+findstr /si [term] *.txt
+findstr /si [term] *.xml
+findstr /si [term] *.ini
 
-# Searching File Contents
+# Find all passwords in all files
+findstr /spin 'password' *.*
+```
 
-# Searching Shared Drives
+## Common File Locations
+```
+c:\sysprep.inf
+c:\sysprep\sysprep.xml
+c:\unattend.xml
+%WINDIR%\Panther\Unattend\Unattended.xml
+%WINDIR%\Panther\Unattended.xml
+
+dir c:\*vnc.ini /s /b
+dir c:\*ultravnc.ini /s /b 
+dir c:\ /s /b | findstr /si *vnc.ini
+```
+Unattend credentials are base64 encoded. `base64 -d [cred]`
+## Search the registry
+### reg query
+```
+REG QUERY HKLM /F "password" /t REG_SZ /S /K
+REG QUERY HKCU /F "password" /t REG_SZ /S /K
+
+# VNC
+reg query "HKCU\Software\ORL\WinVNC3\Password"
+
+# Windows autologin
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+
+# SNMP Paramters
+reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP"
+
+# Putty
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
+
+# Search for password in registry
+reg query HKLM /f password /t REG_SZ /s
+reg query HKCU /f password /t REG_SZ /s
+```
+
+## Searching Shared Drives
+
+## Wifi Passwords
+Find SSID
+```
+netsh wlan show profile
+```
+Get Cleartext Password
+```
+netsh wlan show profile <SSID> key=clear
+```
+Oneliner to get them all
+```
+cls & echo. & for /f "tokens=4 delims=: " %a in ('netsh wlan show profiles ^| find "Profile "') do @echo off > nul & (netsh wlan show profiles name=%a key=clear | findstr "SSID Cipher Content" | find /v "Number" & echo.) & @echo on
+```
+## Sticky Notes
+Sticky notes stores content in sqlite db at `C:\Users\<user>\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite'
+
+## Powershell History
+```
+type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+cat (Get-PSReadlineOption).HistorySavePath
+cat (Get-PSReadlineOption).HistorySavePath | sls passw
+```
+## Alternate Data Streams
+```
+PS > Get-Item -path flag.txt -Stream *
+PS > Get-Content -path flag.txt -Stream Flag
+```
+
 
 # Powershell PSCredentials
 ## Summary
