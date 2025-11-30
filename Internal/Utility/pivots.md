@@ -148,10 +148,10 @@ sudo ip route add [dest_subnet/cidr] dev ligolo
 interace_add_route --name [creative stupid name] --route [dest net/cidr]
 ```
 
-## Ligolo-NG Example usage from PNPT exam
+## Ligolo-NG Example usage
 - upload to target host
 ```
-scp -i example -r tools/agent example@host.exampledomain.com:/home/adminuser/agent
+scp -i example -r tools/agent example@host.exampledomain.com:/home/example/agent
 ** WARNING: connection is not using a post-quantum key exchange algorithm.
 ** This session may be vulnerable to "store now, decrypt later" attacks.
 ** The server may need to be upgraded. See https://openssh.com/pq.html
@@ -178,10 +178,10 @@ ligolo-ng »
 ```
 - Setup agent on target host
 ```
-//agent -bind 10.10.155.5:4444
+./agent -bind 10.10.10.200:4444
 WARN[0000] TLS Certificate fingerprint is: 
 4159B530249476ACF6A170F5A484B434B1B96925DBF6DE160CCC300D25FA8A8A 
-INFO[0000] Listening on 10.10.155.5:4444...
+INFO[0000] Listening on 10.10.10.200:4444...
 ```
 - Connection from attack host to target host
 ```
@@ -209,4 +209,4 @@ sudo ip route add 10.10.10.0/24 dev pasta
 for i in {1..254}; do (ping -c 1 10.10.10.$i | grep "bytes from" &) ; done
 ```
 # Todo
-- [ ] Test Ligolo
+
