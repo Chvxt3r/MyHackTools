@@ -147,5 +147,65 @@ sudo ip route add [dest_subnet/cidr] dev ligolo
 # Ligolo-NG
 interace_add_route --name [creative stupid name] --route [dest net/cidr]
 ```
+
+## Ligolo-NG Example usage from PNPT exam
+- upload to target host
+```scp -i example -r tools/agent example@host.exampledomain.com:/home/adminuser/agent
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+Enter passphrase for key 'example':
+```
+- Setup attack host
+```
+sudo tools/proxy -autocert
+[sudo] password for chvxt3r: 
+INFO[0000] Loading configuration file ligolo-ng.yaml 
+INFO[0000] Listening on 0.0.0.0:11601 
+ __ _ __ 
+ / / (_)___ _____ / /___ ____ ____ _
+ / / / / __ `/ __ \/ / __ \______/ __ \/ __ `/
+ / /___/ / /_/ / /_/ / / /_/ /_____/ / / / /_/ / 
+/_____/_/\__, /\____/_/\____/ /_/ /_/\__, / 
+ /____/ /____/ 
+ Made in France ♥ by @Nicocha30!
+ Version: 0.8.2
+ligolo-ng » interface_create --name 'test'
+INFO[0010] Creating a new test interface... 
+INFO[0010] Interface created! 
+ligolo-ng » 
+```
+- Setup agent on target host
+```
+//agent -bind 10.10.155.5:4444
+WARN[0000] TLS Certificate fingerprint is: 
+4159B530249476ACF6A170F5A484B434B1B96925DBF6DE160CCC300D25FA8A8A 
+INFO[0000] Listening on 10.10.155.5:4444...
+```
+- Connection from attack host to target host
+```
+ligolo-ng » connect_agent --ip 10.10.10.200:4444
+? TLS Certificate Fingerprint is: 
+4159B530249476ACF6A170F5A484B434B1B96925DBF6DE160CCC300D25FA8A8A, connect? Yes
+INFO[0240] Agent connected. id=02be4cad2165 name=adminuser@mail 
+remote="10.10.10.200:4444"
+```
+- Configure the session on the attack host
+```
+ligolo-ng » session
+? Specify a session : 1 - example@host - 10.10.10.200:4444 - 02be4cad2165
+```
+- Start the tunnel (attack host)
+```
+[Agent : example@host] » tunnel_start --tun test
+```
+- Setup routing
+```
+sudo ip route add 10.10.10.0/24 dev pasta
+```
+- Verify tunnel
+```
+for i in {1..254}; do (ping -c 1 10.10.10.$i | grep "bytes from" &) ; done
+```
 # Todo
 - [ ] Test Ligolo
