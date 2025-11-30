@@ -1,3 +1,9 @@
+# Searching Files
+
+# Searching File Contents
+
+# Searching Shared Drives
+
 # Powershell PSCredentials
 ## Summary
 Powershell PSCredentials are sometimes stored in `.xml` files. The password will be encrypted with a key only found on that machine, so you can't extract and crack. **It will have to be extracted on that machine**  
