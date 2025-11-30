@@ -1,4 +1,8 @@
 # Clear Text Passwords
+## Hints
+- Search PDF's by hand. Open and use the search bar at the top to search.
+- Search anything that looks like installation instructions. Who know's if they may have needed to create a user that might still be active for the isntall.
+
 ## Searching File Contents
 ### findstr
 ```
