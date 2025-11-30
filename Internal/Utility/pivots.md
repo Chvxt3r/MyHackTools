@@ -150,7 +150,8 @@ interace_add_route --name [creative stupid name] --route [dest net/cidr]
 
 ## Ligolo-NG Example usage from PNPT exam
 - upload to target host
-```scp -i example -r tools/agent example@host.exampledomain.com:/home/adminuser/agent
+```
+scp -i example -r tools/agent example@host.exampledomain.com:/home/adminuser/agent
 ** WARNING: connection is not using a post-quantum key exchange algorithm.
 ** This session may be vulnerable to "store now, decrypt later" attacks.
 ** The server may need to be upgraded. See https://openssh.com/pq.html
