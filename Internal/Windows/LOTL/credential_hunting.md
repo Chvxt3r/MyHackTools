@@ -5,6 +5,11 @@
 
 ## Searching File Contents
 ### findstr
+Switches
+- `/s` forces search of current and all sub-directories (recursion)
+- `/i` ignores case
+- `/m` Displays only the file name for the file.
+
 ```
 findstr /si [term] *.txt
 findstr /si [term] *.xml
