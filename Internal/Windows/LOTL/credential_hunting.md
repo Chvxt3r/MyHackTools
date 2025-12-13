@@ -57,6 +57,31 @@ reg query HKCU /f password /t REG_SZ /s
 
 ## Searching Shared Drives
 
+### NFS Shares
+- Enumeration
+```bash
+showmount -e [IP or hostname]
+```
+```bash
+sudo nmap --script nfs* [IP or hostname] -sv -p111,2049
+```
+- Mount the share
+```bash
+sudo mount -t nfs -rw [hostname or ip]:[mountpoint] [local folder]
+# Share is now mounted like a local folder
+```
+- List Content with User & Group names
+```bash
+ls -l /mnt/nfs/
+```
+- List Contents with UIDs & GUIDs
+```bash
+ls -n /mnt/nfs/
+```
+- Unmounting the Share
+```bash
+sudo umount [localfolder]
+```
 ## Wifi Passwords
 Find SSID
 ```
