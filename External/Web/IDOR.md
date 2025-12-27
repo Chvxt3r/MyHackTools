@@ -63,7 +63,7 @@ The above function may never be called as a non-admin user, but if we find it in
 - This will work if the webapp only requires a valid session to make the API call but has no access control on the backend to compare the callers session with the data being called.
 
 ## Mass IDOR Enumeration
-![idor documents](images/web_attacks_idor_documents.jpg)
+![idor documents](/External/images/web_attacks_idor_documents.jpg)
 *Example IDOR vulneerable website*
 
 - Analyzing the page, we see several documents belonging to the user
