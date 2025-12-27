@@ -114,10 +114,10 @@ done
 
 ## Bypassing Encoded References
 ### Examples
-![contracts.php](images/web_attacks_idor_contracts.jpg)
+![contracts.php](/External/images/web_attacks_idor_contracts.jpg)
 *Employee manager web application contracts*
 
-![download.php](images/web_attacks_idor_download_contract.jpg)
+![download.php](/External/images/web_attacks_idor_download_contract.jpg)
 *Employee manager contracts download.php*
 
 ### Enumeration
@@ -163,16 +163,16 @@ done
 
 ## IDOR in Insecure APIs
 ### Example Site
-![idor_employee_manager](images/web_attacks_idor_employee_manager.jpg)
+![idor_employee_manager](/External/images/web_attacks_idor_employee_manager.jpg)
 *Example Employee Manager*
 
-![idor_edit_profile.jpg](images/web_attacks_idor_edit_profile.jpg)
+![idor_edit_profile.jpg](/External/images/web_attacks_idor_edit_profile.jpg)
 *Example Employee Edit Profile*
 
 ### Enumeration
 - Verify that any changes made persist through refreshes (Indicates they are stored in a db)
 - Interecept the request
-    ![idor_update_request](images/web_attacks_idor_update_request.jpg)
+    ![idor_update_request](/External/images/web_attacks_idor_update_request.jpg)
     *Intercepted update request*
     - Things to note from our intercepted request
         - Hidden Fields. Namely the `UID`,`UUID`, and `role` fields
