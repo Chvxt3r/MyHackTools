@@ -1,7 +1,7 @@
 # SQLI TTP's
 
 ## Detection (Identify locations where the user input is not properly sanitized)
-Use one of the below characters or it's URL encoded version and see if the page changes or otherwise errors out.
+Use one or a combination of the below characters or it's URL encoded version and see if the page changes or otherwise errors out.
 
 |Payload|URL Encoded|
 |-------|-----------|
@@ -64,5 +64,6 @@ SELECT * FROM logins WHERE (username='test' OR id=5)-- AND password=test
 This get's us in because we changed the parenthetical `AND` into an `OR` and just entered an arbitrary ID, then commented out the rest of the query.
 
 ## Enumeration
-
+### With `UNION`
+`UNION` statements can only work on select statements with the same number of columns.
 
