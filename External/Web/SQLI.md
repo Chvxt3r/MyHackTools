@@ -117,9 +117,9 @@ Concatenation enables you combine multipe strings into a single string.
 
 |DBMS|Syntax|
 |----|------|
-|Oracle|`'foo'||'bar'`|
+|Oracle|`'foo'\|\|'bar'`|
 |MS|`'foot'+'bar'`|
-|Postgre|`'foo'||'bar'`|
+|Postgre|`'foo'\|\|'bar'`|
 |MySQL|`'foot' 'bar'` or `CONCAT('foo','bar')`|
 
 ### Getting the Database Layout to locate and extract the data.
