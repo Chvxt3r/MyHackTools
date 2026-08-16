@@ -113,7 +113,8 @@ test') union select 1,@@version,3,4-- -
 ```
 
 ### Concatenation (Useful if we only have 1 column being displayed)
-Concatenation enables you combine multipe strings into a single string.
+Concatenation enables you combine multipe strings into a single string.  
+
 |DBMS|Syntax|
 |____|______|
 |Oracle|`'foo'||'bar'`|
@@ -256,7 +257,7 @@ http://serverip:port/shell.php?0=id
 ```
 
 # Resources
-[Portswigger SQLI Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+[Portswigger SQLI Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)  
 [PayloadsAllTheThings SQLI Cheatsheet](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/MySQL%20Injection.md)  
 [PayloadsAllTheThings SQLI Deep Dive](https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/)  
 [Portswigger SQLI Labs](https://portswigger.net/web-security/all-labs#sql-injection)  
