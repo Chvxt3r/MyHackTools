@@ -5,8 +5,12 @@ The most common tools I use, mostly for recon.
 ### nmap
 * My Initial Scan
   ```bash
-  nmap -sCV -p- <$IP> --open -oA scans/nmap_initial
+  sudo nmap -sCV -p- -Pn 10.129.228.93 --open -oA scans/nmap_initial
   ```
+* UDP Scan
+```bash
+sudo nmap -sU -p- -Pn 10.129.228.93 --open -oA scans/nmap_udp
+```
 
 ## Searches from Linux
 ### Grep
