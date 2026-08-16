@@ -116,7 +116,7 @@ test') union select 1,@@version,3,4-- -
 Concatenation enables you combine multipe strings into a single string.  
 
 |DBMS|Syntax|
-|____|______|
+|----|------|
 |Oracle|`'foo'||'bar'`|
 |MS|`'foot'+'bar'`|
 |Postgre|`'foo'||'bar'`|
