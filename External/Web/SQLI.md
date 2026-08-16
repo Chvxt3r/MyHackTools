@@ -248,5 +248,6 @@ http://serverip:port/shell.php?0=id
 
 # Resources
 [PayloadsAllTheThings SQLI Cheatsheet](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/MySQL%20Injection.md)  
-[PayloadsAllTheThings SQLI Deep Dive](https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/)
+[PayloadsAllTheThings SQLI Deep Dive](https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/)  
+[Portswigger SQLI Labs](https://portswigger.net/web-security/all-labs#sql-injection)  
 
