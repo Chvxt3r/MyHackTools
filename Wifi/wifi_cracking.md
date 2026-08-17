@@ -85,10 +85,6 @@ airodump-ng wlan0mon -c 1 -w WPA
 
 ```
 
-# Crack the key
-aircrack-ng -w <wordlist> -b <AP Mac Address> <capturefile .cap>
-```
-
 ## Password Cracking
 ### Using hashcat
 We need to extract the hash from our capture file, for `hashcat` we `hcxpcapngtool`
