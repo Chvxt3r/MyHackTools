@@ -8,3 +8,4 @@
 |[IMEI Password Generator](https://github.com/RealEnder/imeigen)|WPA-PSK default password candidates generator for mobile broadband WIFI routers, based on IMEI|
 |[Time Warner/Spectrum Routers Cracker](https://github.com/datagoboom/twcracker)|Default Password Generator for Time Warner / Spectrum Routers|
 |[Wifi-WPA-Keyspace-List](https://github.com/sheimo/Wifi-WPA-Keyspace-List)|A list of various routers default WPA key space|
+|[Netgear-Password-Constructinator](https://github.com/redsquirrel7/Netgear-Password-Constructinator)| Netgear Password Generator
